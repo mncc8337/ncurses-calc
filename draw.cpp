@@ -3,7 +3,7 @@
 // <1> to choose eraser
 // <2> to <8> to choose color
 // <9> to clear
-// `esc` to quit
+// <esc> to quit
 
 #include <ncurses.h>
 
