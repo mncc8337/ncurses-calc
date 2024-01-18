@@ -1,12 +1,18 @@
 #pragma once
 #include <string>
 using std::string;
+using std::to_string;
 
 inline int toint(char a) {
     return int(a - 48);
 }
 inline char tochr(int a) {
     return char(a + 48);
+}
+
+// remove all '0's
+inline void fmt(string& str) {
+    while(str.length() > 0 and str[0] == '0') str.erase(0, 1);
 }
 
 inline string add(string a, string b) {
@@ -117,5 +123,61 @@ inline string mul(string a, string b) {
         result = add(result, sum);
     }
 
+    return result;
+}
+
+inline string div1chr(string a, char b) {
+    string result = "";
+    int carry = 0;
+    int sum = 0;
+    for(int i = 0; i < a.length(); i++) {
+        sum = toint(a[i]) + carry * 10;
+        result += tochr(sum / toint(b));
+        carry = sum % toint(b);
+    }
+
+    return result;
+}
+
+inline string div(string a, string b, string& mod) {
+    mod = "";
+
+    if(a.length() < b.length()) {
+        mod = a;
+        return "0";
+    }
+    if(a == b) {
+        if(a != "0") {
+            mod = "0";
+            return "1";
+        }
+        else return "math error";
+    }
+
+    string result = "";
+
+    string d = a.substr(0, b.length());
+    if(a.length() >= b.length())
+        a = a.substr(b.length(), a.length());
+    else a = "_";
+
+    if(a.length() == 0) a = "_";
+
+    int cnt = 0;
+    for(int i = 0; i < a.length(); i++) {
+        if(a[i] != '_')
+            d += a[i];
+
+        cnt = 0;
+        string t = sub(d, b);
+        while(t[0] != '-') {
+            cnt++;
+            d = t;
+            t = sub(t, b);
+        }
+        result += to_string(cnt);
+    }
+
+    mod = d; fmt(mod);
     return result;
 }
