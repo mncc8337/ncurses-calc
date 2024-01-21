@@ -88,10 +88,6 @@ void clamp(int& val, int min, int max) {
     if(val > max) val = max;
 }
 
-string num1 = "";
-string num2 = "";
-string ans;
-
 enum OPERATOR {
     ADD = 1,
     SUB = 2,
@@ -120,13 +116,16 @@ string get_curr_op(int op) {
     }
 }
 
-string* selecting_num;
+
+string num1 = "";
+string num2 = "";
+string ans;
+string* selecting_num = &num1;
 char op = -1;
 
 int main(int argc, char** argv) {
-    selecting_num = &num1;
-
     initscr();
+    keypad(stdscr, TRUE);
 
     start_color();
     use_default_colors();
@@ -135,8 +134,6 @@ int main(int argc, char** argv) {
     init_pair(3, 4, -1); // blue
 
     wbkgd(stdscr, COLOR_PAIR(1));
-
-    keypad(stdscr, TRUE);
 
     int buttonw = -1;
     int buttonh = -1;
@@ -165,8 +162,7 @@ int main(int argc, char** argv) {
     string empty(1, ' ');
     
     int chr = '-';
-    bool running = true;
-    while(running) {
+    while(chr != KEY_ESCAPE) {
         wrefresh(stdscr);
 
         getmaxyx(stdscr, wheight, wwidth);
@@ -290,8 +286,6 @@ int main(int argc, char** argv) {
             posx++;
         }
     
-        else if(chr == KEY_ESCAPE)
-            running = false;
         else if(chr == KEY_BACKDEL and posx > 0) {
             posx--;
             selecting_num->erase(selecting_num->end()-1, selecting_num->end());
